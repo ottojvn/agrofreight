@@ -1,0 +1,63 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+
+# --- Virtual Environments ---
+venv/
+.venv/
+env/
+
+# --- Environment Variables & Secrets (CRITICAL) ---
+.env
+.env.local
+config.py
+secrets.py
+
+# --- Data (Exclude large files) ---
+*.csv
+*.xlsx
+*.json
+*.xml
+data/raw/*
+data/processed/*
+!data/.gitkeep
+
+# --- SQL Server ---
+*.mdf
+*.ldf
+*.bak
+
+# --- Power BI ---
+*.pbix
+# Note: You might want to remove *.pbix from here if you want to version the binary file,
+# but usually, large binaries are bad for Git. For a portfolio, it's optional.
+
+# --- IDEs & Editors ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS Generated ---
+.DS_Store
+Thumbs.db
