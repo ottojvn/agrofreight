@@ -1,37 +1,51 @@
-CREATE TABLE dates
+CREATE DATABASE AgroFreight;
+GO
+USE AgroFreight;
+GO
+
+CREATE TABLE Dim_Date
 (
-    date_id INTEGER IDENTITY(1,1) PRIMARY KEY,
-    record_date DATE NOT NULL,
-    month INTEGER NOT NULL,
-    year INTEGER NOT NULL
+    DateID INTEGER IDENTITY(1,1) PRIMARY KEY,
+    RecordDate DATE NOT NULL,
+    Month INTEGER NOT NULL,
+    Year INTEGER NOT NULL,
+    IsHarvestSeason BIT NOT NULL
 );
 
-CREATE TABLE routes
+CREATE TABLE Dim_Route
 (
-    route_id INTEGER IDENTITY(1,1) PRIMARY KEY,
-    origin VARCHAR(100) NOT NULL,
-    destination VARCHAR(100) NOT NULL,
-    distance_km INTEGER NOT NULL
+    RouteID INTEGER IDENTITY(1,1) PRIMARY KEY,
+    Origin VARCHAR(100) NOT NULL,
+    Destination VARCHAR(100) NOT NULL,
+    DistanceKM INTEGER NOT NULL
 );
 
-CREATE TABLE vehicles
+CREATE TABLE Dim_Vehicle
 (
-    vehicle_id INTEGER IDENTITY(1,1) PRIMARY KEY,
-    plate_number VARCHAR(20) NOT NULL,
-    vehicle_type VARCHAR(50) NOT NULL,
-    capacity INTEGER NOT NULL
+    VehicleID INTEGER IDENTITY(1,1) PRIMARY KEY,
+    PlateNumber VARCHAR(20) NOT NULL,
+    VehicleType VARCHAR(50) NOT NULL,
+    Capacity INTEGER NOT NULL
 );
 
-CREATE TABLE fact_freights
+CREATE TABLE Log_Errors
 (
-    freight_id INTEGER IDENTITY(1,1) PRIMARY KEY,
-    date_id INTEGER NOT NULL,
-    route_id INTEGER NOT NULL,
-    vehicle_id INTEGER NOT NULL,
-    freight_value DECIMAL(10, 2) NOT NULL,
-    diesel_price DECIMAL(10, 2) NOT NULL,
-    weight_ton DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (date_id) REFERENCES dates(date_id),
-    FOREIGN KEY (route_id) REFERENCES routes(route_id),
-    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id)
+    ErrorID INTEGER IDENTITY(1,1) PRIMARY KEY,
+    RawData NVARCHAR(MAX) NOT NULL,
+    ErrorMessage VARCHAR(255) NOT NULL,
+    ErrorDate DATE NOT NULL DEFAULT GETDATE()
+);
+
+CREATE TABLE Fact_Freight
+(
+    FreightID INTEGER IDENTITY(1,1) PRIMARY KEY,
+    DateID INTEGER NOT NULL,
+    RouteID INTEGER NOT NULL,
+    VehicleID INTEGER NOT NULL,
+    FreightValue DECIMAL(10, 2) NOT NULL,
+    DieselPrice DECIMAL(10, 2) NOT NULL,
+    WeightTon DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (DateID) REFERENCES Dim_Date(DateID),
+    FOREIGN KEY (RouteID) REFERENCES Dim_Route(RouteID),
+    FOREIGN KEY (VehicleID) REFERENCES Dim_Vehicle(VehicleID)
 );
