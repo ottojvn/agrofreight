@@ -2,9 +2,9 @@
 
 ## Sprint 1: Infrastructure & Data Modeling (Environment: Arch Linux)
 **Goal:** Establish the containerized database environment and define the structural schema.
-- [ ] **Task 1.1:** Linux Environment Setup. Install Docker for SQL Server 2022. Install Visual Studio Code and the MSSQL Extension to replace Azure Data Studio.
-- [ ] **Task 1.2:** Conceptual Modeling. Create the Entity-Relationship Diagram (ERD) defining Facts and Dimensions based on the Star Schema.
-- [ ] **Task 1.3:** Database Implementation. Write and execute T-SQL DDL scripts within Visual Studio Code (connected to the Docker instance) to create the database, tables, and constraints.
+- [x] **Task 1.1:** Linux Environment Setup. Install Docker for SQL Server 2022. Install Visual Studio Code and the MSSQL Extension to replace Azure Data Studio.
+- [x] **Task 1.2:** Conceptual Modeling. Create the Entity-Relationship Diagram (ERD) defining Facts and Dimensions based on the Star Schema.
+- [x] **Task 1.3:** Database Implementation. Write and execute T-SQL DDL scripts within Visual Studio Code (connected to the Docker instance) to create the database, tables, and constraints.
 
 ## Sprint 2: Data Engineering & ETL Pipeline (Environment: Arch Linux)
 **Goal:** Develop the Python mechanism to generate, validate, and load data into the containerized database.
