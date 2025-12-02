@@ -1,26 +1,60 @@
 # AgroFreight Intelligence
 
-## Sobre o Projeto
-O AgroFreight Intelligence é uma solução de Business Intelligence (End-to-End) desenvolvida para monitorar a volatilidade de custos de frete no setor do agronegócio. O sistema centraliza dados históricos de transporte e custos de combustível para identificar rotas com margens de lucro comprometidas durante o período de safra.
+## Project Overview
+AgroFreight Intelligence is an end-to-end Business Intelligence solution developed to monitor freight cost volatility in the agribusiness sector. The system centralizes historical transport data and fuel costs to identify routes with eroding profit margins during the harvest season ("Safrinha").
 
-## Objetivos Técnicos
-Este projeto demonstra a construção de um pipeline de dados robusto, focando nas seguintes competências:
+This project was created for "AgroLog" (a fictitious logistics operator in the Brazilian Midwest) to solve the challenge of tracking freight costs that are currently managed through decentralized spreadsheets, leading to delayed decision-making and financial losses.
 
-1.  **Engenharia de Dados e ETL:** Desenvolvimento de scripts em Python para ingestão de dados e implementação de algoritmos de "Sanidade Logística" para validação de consistência (ex: rejeição de registros com telemetria inviável).
-2.  **Data Warehousing:** Modelagem e implementação de banco de dados relacional em SQL Server utilizando arquitetura Star Schema (Fatos e Dimensões).
-3.  **Análise de Dados:** Criação de dashboards em Power BI para visualização de indicadores chave (KPIs) como Custo por Tonelada/KM e variação de preço do Diesel.
+## Project Scope
 
-## Stack Tecnológico
--   **Linguagem:** Python 3.10+ (Pandas, NumPy, SQLAlchemy, PyODBC).
--   **Banco de Dados:** Microsoft SQL Server 2022.
--   **Visualização:** Microsoft Power BI.
--   **Controle de Versão:** Git & GitHub.
+### In Scope
+- **ETL Pipeline:** Python scripts to extract data from CSV files, transform/clean it, and load it into the database.
+- **Database:** Design and implementation of a Star Schema in SQL Server.
+- **Validation Logic:** Implementation of strict business rules to validate trip feasibility (the "Logistics Sanity Check").
+- **Visualization:** Interactive Power BI Dashboard showing key metrics.
 
-## Estrutura do Repositório
--   **docs/**: Contém as regras de negócio (Project Charter) e especificações técnicas.
--   **src/**: Código fonte dos scripts de ETL e validação de dados.
--   **sql/**: Scripts DDL para criação de tabelas e procedures no banco de dados.
--   **BACKLOG.md**: Lista mestre de requisitos e planejamento de sprints.
+### Out of Scope
+- Real-time data streaming.
+- Machine Learning for price prediction (focus is on descriptive analytics).
+- Web interface for data entry.
 
-## Status do Projeto
-Atualmente em fase de desenvolvimento (Sprint 1), com foco na configuração do ambiente e modelagem de dados no SQL Server.
+## Key Performance Indicators (KPIs)
+| KPI | Description |
+|-----|-------------|
+| **Average Freight Cost per Ton** | Evaluated by route and month |
+| **Cost per Kilometer** | To compare efficiency across different routes |
+| **Rejection Rate** | Percentage of records rejected by the Sanity Check |
+
+## Critical Business Rules (Logistics Sanity Check)
+To ensure data quality, the ETL process applies the following validation logic. Records failing these checks are rejected and logged separately:
+
+1. **Maximum Speed Feasibility:**
+   - Calculate average speed: `Distance (KM) / (Arrival Time - Departure Time)`
+   - Rule: If average speed > 90 KM/h, mark as invalid (heavy trucks cannot sustain this average safely on local roads)
+   - Rule: If `Arrival Time` <= `Departure Time`, mark as invalid
+
+2. **Cost Consistency:**
+   - Rule: Freight Value cannot be negative or zero
+
+## Environment Specifications
+| Component | Technology |
+|-----------|------------|
+| **Source Database** | SQL Server 2022 (Docker) |
+| **Visualization Tool** | Power BI Desktop (Windows) |
+| **ETL Language** | Python 3.10+ (Pandas, NumPy, SQLAlchemy, PyODBC) |
+| **Database Management** | Azure Data Studio / VS Code with MSSQL Extension |
+| **Version Control** | Git & GitHub |
+
+## Repository Structure
+```
+├── docs/                 # Data dictionary, deployment instructions
+│   ├── DATA_DICTIONARY.md    # Schema & ETL rules
+│   └── DEPLOYMENT.md         # Environment setup & migration guide
+├── sql/                  # DDL scripts for database tables and procedures
+├── src/                  # ETL scripts and data validation code (future)
+├── BACKLOG.md            # Sprint planning and task tracking
+└── docker-compose.yml    # SQL Server container configuration
+```
+
+## Project Status
+Currently in development (Sprint 1), with focus on environment configuration and data modeling in SQL Server.
