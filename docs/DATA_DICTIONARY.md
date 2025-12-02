@@ -72,7 +72,12 @@ All incoming records must pass the following validation rules before insertion i
 
 #### Rule 1: Maximum Speed Feasibility
 ```
-average_speed = Distance (KM) / (Arrival Time - Departure Time in hours)
+average_speed = DistanceKM / hours_elapsed
+
+Where:
+  hours_elapsed = (ArrivalTime - DepartureTime) converted to decimal hours
+  
+Example: If a truck travels 450 KM in 6 hours, average_speed = 450 / 6 = 75 KM/h (valid)
 ```
 - **REJECT** if `average_speed > 90 KM/h` (heavy trucks cannot sustain this safely)
 - **REJECT** if `Arrival Time <= Departure Time` (invalid time sequence)
