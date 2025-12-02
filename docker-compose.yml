@@ -6,7 +6,7 @@ services:
       - "1433:1433"
     environment:
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=trem0=docker
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
     restart: always
     volumes:
       - mssql_data:/var/opt/mssql
