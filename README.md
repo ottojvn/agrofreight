@@ -42,7 +42,7 @@ To ensure data quality, the ETL process applies the following validation logic. 
 | **Source Database** | SQL Server 2022 (Docker) |
 | **Visualization Tool** | Power BI Desktop (Windows) |
 | **ETL Language** | Python 3.10+ (Pandas, NumPy, SQLAlchemy, PyODBC) |
-| **Database Management** | Azure Data Studio / VS Code with MSSQL Extension |
+| **Database Management** | SQL Client (e.g., SSMS, Azure Data Studio, DBeaver) |
 | **Version Control** | Git & GitHub |
 
 ## Repository Structure

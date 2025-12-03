@@ -103,4 +103,4 @@ Example: If a truck travels 450 KM in 6 hours, average_speed = 450 / 6 = 75 KM/h
 ## Code Standards
 - **Nomenclature:** `snake_case` for Python variables/functions; `PascalCase` for Classes
 - **Credentials:** NEVER hardcode passwords. Use environment variables or a separate `secrets.py` (listed in `.gitignore`)
-- **Modularity:** Connection strings must be isolated to facilitate switching between Docker and Windows environments
+- **Modularity:** Connection strings must be isolated to facilitate switching between environments
