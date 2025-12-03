@@ -24,7 +24,11 @@ AgroFreight Intelligence uses a hybrid development workflow to accommodate conta
 ### Container Environment Setup
 
 #### 1. Docker Installation
-Ensure Docker is running on your system.
+Ensure Docker is running on your system. Verify with:
+```bash
+docker --version
+docker ps
+```
 
 #### 2. Start SQL Server Container
 Use the provided `docker-compose.yml`:
@@ -37,8 +41,7 @@ docker-compose up -d
 ```
 
 #### 3. ODBC Driver
-Install `msodbcsql17` or `msodbcsql18` for your distribution:
-- Follow Microsoft's official documentation for your operating system
+Install `msodbcsql17` or `msodbcsql18` for your distribution. See [Microsoft ODBC Driver for SQL Server](https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server) for installation instructions.
 
 #### 4. Python Dependencies
 ```bash
