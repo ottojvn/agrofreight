@@ -1,48 +1,63 @@
 # AgroFreight Intelligence
 
 ## Visão Geral
-Solução de Business Intelligence "end-to-end" desenvolvida para monitoramento de volatilidade de fretes no setor agroindustrial. O sistema centraliza dados históricos de transporte para identificar rotas com margens de lucro decrescentes durante a safra.
 
-## Arquitetura do Projeto
-O projeto adota uma arquitetura híbrida, segregando a engenharia de dados da camada de visualização:
+Solução de Business Intelligence "end-to-end" desenvolvida para monitoramento estratégico de logística no setor agroindustrial. O sistema centraliza dados de transporte para identificar ineficiências de rotas e volatilidade de fretes durante a safra.
 
-*   **Engenharia de Dados:** Pipeline ETL em Python e banco de dados SQL Server containerizado (Docker).
-*   **Visualização:** Dashboard interativo em Power BI consumindo dados de uma instância SQL Server local.
+O projeto segue uma abordagem evolutiva, iniciando como um MVP em ambiente controlado (On-Premise/Docker) e expandindo para uma arquitetura Enterprise Cloud-Native (Azure).
+
+## Arquitetura e Evolução
+
+O ciclo de vida do projeto é dividido em duas fases estratégicas:
+
+### Fase 1: Core & MVP (Estado Atual)
+
+Foco na validação de regras de negócio (Sanity Check), modelagem dimensional e visualização.
+
+* **Engenharia:** Pipeline ETL em Python (Pandas/SQLAlchemy).
+* **Infraestrutura:** SQL Server containerizado via Docker.
+* **Visualização:** Power BI conectado a instância local.
+
+### Fase 2: Expansão Enterprise (Roadmap Futuro)
+
+Migração para o ecossistema Microsoft Azure visando escalabilidade, telemetria IoT e processamento massivo.
+
+* **IoT Industrial:** Simulação de telemetria embarcada (C++) enviando dados via MQTT para **Azure IoT Hub**.
+* **Big Data:** Processamento distribuído com **Azure Databricks (Spark)** e arquitetura Medalhão (Bronze/Silver/Gold).
+* **Cloud & DevOps:** Infraestrutura como Código (IaC) com **Terraform** e orquestração via **Azure Data Factory**.
+* **Armazenamento:** Migração para **Azure SQL Database** e **Data Lake Gen2**.
 
 ## Estrutura do Repositório
-*   `docs/`: Documentação técnica detalhada (Dicionário de Dados e Guia de Deploy).
-*   `sql/`: Scripts DDL para criação do banco de dados.
-*   `src/`: Scripts Python para geração de dados e pipeline ETL.
-*   `docker-compose.yml`: Definição do serviço de banco de dados.
+
+* `docs/`: Documentação técnica (Dicionário de Dados e Guia de Deploy).
+* `sql/`: Scripts DDL para o ambiente Core (SQL Server).
+* `src/etl/`: Scripts Python para ingestão e transformação (Fase 1).
+* `src/iot/`: (Futuro) Código C++ para simulação de sensores e envio MQTT.
+* `infra/`: (Futuro) Scripts Terraform para provisionamento Azure.
 
 ## KPIs Principais
-*   **Custo Médio de Frete por Tonelada:** Análise temporal e por rota.
-*   **Custo por Quilômetro:** Métrica de eficiência logística.
-*   **Taxa de Rejeição:** Percentual de registros reprovados pelas regras de validação (Sanity Check).
 
-## Roadmap e Status
-O projeto está estruturado em Sprints para simular um ambiente ágil.
+* **Custo Médio de Frete (R$/Ton):** Análise temporal e sazonal.
+* **Eficiência Logística (R$/Km):** Comparativo de rentabilidade por rota.
+* **Integridade de Dados (Data Quality):** Taxa de rejeição de registros baseada em regras físicas (velocidade/tempo).
 
-### Sprint 1: Infraestrutura e Modelagem (Concluído)
-- [x] Configuração de ambiente containerizado (Docker).
-- [x] Modelagem Dimensional (Star Schema).
-- [x] Implementação do Banco de Dados (DDL).
+## Roadmap de Execução
 
-### Sprint 2: Engenharia de Dados (Em Andamento)
-- [x] Configuração do ambiente Python e dependências.
-- [x] Geração de massa de dados sintética.
-- [ ] Implementação de lógica de transformação e validação ("Logistics Sanity Check").
-- [ ] Carga de dados no ambiente containerizado.
+### Fase 1: MVP (Local/Docker)
 
-### Sprint 3: Migração e BI (Planejado)
-- [ ] Migração de dados entre ambientes (Docker → Local).
-- [ ] Conexão e modelagem no Power BI.
-- [ ] Desenvolvimento de medidas DAX e Dashboards.
+* [x] **Sprint 1:** Infraestrutura containerizada e Modelagem Star Schema.
 
-### Sprint 4: Documentação e Refinamento (Planejado)
-- [ ] Refatoração de código e modularização.
-- [ ] Testes end-to-end e validação final.
+* [x] **Sprint 2:** Engenharia de Dados (Geração de massa e ETL Python).
+* [ ] **Sprint 3:** Visualização e Storytelling com Power BI.
+* [ ] **Sprint 4:** Refinamento, modularização e documentação técnica.
+
+### Fase 2: Expansão Enterprise (Azure)
+
+* [ ] **Expansão I (Infraestrutura):** Provisionamento de Azure SQL e Data Lake via Terraform.
+
+* [ ] **Expansão II (IoT Industrial):** Desenvolvimento de simulador de telemetria em **C++** e ingestão via **Azure IoT Hub**.
+* [ ] **Expansão III (Big Data):** Migração do ETL para **Databricks (PySpark)** e implementação de Governança de Dados.
 
 ---
-*Para detalhes sobre regras de negócio e esquema de dados, consulte [DATA_DICTIONARY.md](docs/DATA_DICTIONARY.md).*
-*Para instruções de configuração e execução, consulte [DEPLOYMENT.md](docs/DEPLOYMENT.md).*
+*Para regras de negócio detalhadas, consulte [DATA_DICTIONARY.md](docs/DATA_DICTIONARY.md).*
+*Para configuração do ambiente atual (Fase 1), consulte [DEPLOYMENT.md](docs/DEPLOYMENT.md).*
