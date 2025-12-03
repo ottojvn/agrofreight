@@ -1,34 +1,30 @@
 # Deployment Guide
 
 ## Overview
-AgroFreight Intelligence uses a hybrid development workflow to accommodate Linux-based Data Engineering and Windows-based Business Intelligence. This guide covers environment setup and migration procedures.
+AgroFreight Intelligence uses a hybrid development workflow to accommodate containerized Data Engineering and Windows-based Business Intelligence. This guide covers environment setup and migration procedures.
 
 ## System Architecture
 
-### Phase 1: Data Engineering (Linux Environment)
+### Data Engineering Layer
 | Component | Technology |
 |-----------|------------|
 | Data Source | Local CSV files generated via Python |
 | Processing Layer | Python scripts |
 | Storage Layer | SQL Server 2022 (Docker Container) |
-| Management | VS Code with MSSQL Extension or Azure Data Studio |
+| Management | SQL Client (e.g., SSMS, Azure Data Studio, DBeaver) |
 
-### Phase 2: Visualization (Windows Environment)
+### Visualization Layer
 | Component | Technology |
 |-----------|------------|
-| Storage Layer | SQL Server Developer Edition (Native Windows) |
+| Storage Layer | SQL Server Developer Edition (Windows) |
 | Presentation Layer | Power BI Desktop |
 
 ## Environment Setup
 
-### Linux Requirements
+### Container Environment Setup
 
 #### 1. Docker Installation
-Ensure Docker service is active:
-```bash
-systemctl start docker
-systemctl enable docker
-```
+Ensure Docker is running on your system.
 
 #### 2. Start SQL Server Container
 Use the provided `docker-compose.yml`:
@@ -42,28 +38,22 @@ docker-compose up -d
 
 #### 3. ODBC Driver
 Install `msodbcsql17` or `msodbcsql18` for your distribution:
-- **Ubuntu/Debian:** Follow Microsoft's official APT repository setup
-- **Arch Linux:** Install via AUR
+- Follow Microsoft's official documentation for your operating system
 
-#### 4. VS Code Extensions
-Install the following extensions:
-- `ms-mssql.mssql` (SQL Server)
-- `ms-python.python` (Python)
-
-#### 5. Python Dependencies
+#### 4. Python Dependencies
 ```bash
 python -m venv venv
 source venv/bin/activate
 pip install pandas numpy sqlalchemy pyodbc
 ```
 
-#### 6. Database Authentication
+#### 5. Database Authentication
 Use SQL Authentication for Docker:
 - **User:** `sa`
 - **Password:** Strong password defined in `.env` file
 - **Port:** `1433`
 
-### Windows Requirements
+### Visualization Environment Setup
 
 #### 1. SQL Server Developer Edition
 Install SQL Server Developer Edition locally.
@@ -71,31 +61,31 @@ Install SQL Server Developer Edition locally.
 #### 2. Power BI Desktop
 Install the latest version from Microsoft Store or official download.
 
-#### 3. SQL Server Management Studio (SSMS)
-Recommended for database backup/restore operations.
+#### 3. SQL Client
+A SQL client (e.g., SSMS, Azure Data Studio, DBeaver) is recommended for database backup/restore operations.
 
 ## Connection Strings
 
-### Docker (Linux)
+### Docker (Container Environment)
 ```
 Server=localhost,1433;Database=AgroFreight;User Id=sa;Password=<your_password>;TrustServerCertificate=true;
 ```
 
-### Local (Windows)
+### Local (Visualization Environment)
 ```
 Server=localhost;Database=AgroFreight;Trusted_Connection=True;
 ```
 
 ### Python SQLAlchemy Format
 ```python
-# Docker (Linux)
+# Docker (Container Environment)
 engine = create_engine(
     "mssql+pyodbc://sa:<password>@localhost:1433/AgroFreight"
     "?driver=ODBC+Driver+18+for+SQL+Server"
     "&TrustServerCertificate=yes"
 )
 
-# Windows (Trusted Connection)
+# Local (Visualization Environment with Trusted Connection)
 engine = create_engine(
     "mssql+pyodbc://localhost/AgroFreight"
     "?driver=ODBC+Driver+18+for+SQL+Server"
@@ -105,10 +95,10 @@ engine = create_engine(
 
 ## Migration Strategy (The Bridge)
 
-To transition from Phase 1 (Linux/Docker) to Phase 2 (Windows/Power BI):
+To transition data from the Container Environment to the Visualization Environment for Power BI integration:
 
 ### Step 1: Create Database Backup
-Execute in VS Code or Azure Data Studio (connected to Docker):
+Execute in your SQL client (connected to Docker):
 ```sql
 BACKUP DATABASE AgroFreight
 TO DISK = '/var/opt/mssql/backup/AgroFreight.bak'
@@ -116,13 +106,13 @@ WITH FORMAT, INIT, NAME = 'AgroFreight Full Backup';
 ```
 
 ### Step 2: Copy Backup File
-Copy the `.bak` file from the Docker container to a Windows-accessible location:
+Copy the `.bak` file from the Docker container to the visualization environment:
 ```bash
 docker cp agrofreight_sql:/var/opt/mssql/backup/AgroFreight.bak ./AgroFreight.bak
 ```
 
-### Step 3: Restore on Windows
-Using SSMS on Windows:
+### Step 3: Restore Database
+Using a SQL client:
 1. Right-click **Databases** → **Restore Database**
 2. Select **Device** → Browse to the `.bak` file
 3. Verify file paths and click **OK**
