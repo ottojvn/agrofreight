@@ -27,7 +27,7 @@ AgroFreight Intelligence uses a hybrid development workflow to accommodate conta
 Ensure Docker is running on your system. Verify with:
 ```bash
 docker --version
-docker ps
+docker info
 ```
 
 #### 2. Start SQL Server Container
@@ -41,12 +41,16 @@ docker-compose up -d
 ```
 
 #### 3. ODBC Driver
-Install `msodbcsql17` or `msodbcsql18` for your distribution. See [Microsoft ODBC Driver for SQL Server](https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server) for installation instructions.
+Install `msodbcsql17` or `msodbcsql18`. See [Microsoft ODBC Driver for SQL Server](https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server) for platform-specific installation instructions.
 
 #### 4. Python Dependencies
 ```bash
 python -m venv venv
-source venv/bin/activate
+
+# Activate virtual environment
+# On Unix/macOS: source venv/bin/activate
+# On Windows: venv\Scripts\activate
+
 pip install pandas numpy sqlalchemy pyodbc
 ```
 
