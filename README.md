@@ -1,60 +1,48 @@
 # AgroFreight Intelligence
 
-## Project Overview
-AgroFreight Intelligence is an end-to-end Business Intelligence solution developed to monitor freight cost volatility in the agribusiness sector. The system centralizes historical transport data and fuel costs to identify routes with eroding profit margins during the harvest season ("Safrinha").
+## Visão Geral
+Solução de Business Intelligence "end-to-end" desenvolvida para monitoramento de volatilidade de fretes no setor agroindustrial. O sistema centraliza dados históricos de transporte para identificar rotas com margens de lucro decrescentes durante a safra.
 
-This project was created for "AgroLog" (a fictitious logistics operator in the Brazilian Midwest) to solve the challenge of tracking freight costs that are currently managed through decentralized spreadsheets, leading to delayed decision-making and financial losses.
+## Arquitetura do Projeto
+O projeto adota uma arquitetura híbrida, segregando a engenharia de dados da camada de visualização:
 
-## Project Scope
+*   **Engenharia de Dados:** Pipeline ETL em Python e banco de dados SQL Server containerizado (Docker).
+*   **Visualização:** Dashboard interativo em Power BI consumindo dados de uma instância SQL Server local.
 
-### In Scope
-- **ETL Pipeline:** Python scripts to extract data from CSV files, transform/clean it, and load it into the database.
-- **Database:** Design and implementation of a Star Schema in SQL Server.
-- **Validation Logic:** Implementation of strict business rules to validate trip feasibility (the "Logistics Sanity Check").
-- **Visualization:** Interactive Power BI Dashboard showing key metrics.
+## Estrutura do Repositório
+*   `docs/`: Documentação técnica detalhada (Dicionário de Dados e Guia de Deploy).
+*   `sql/`: Scripts DDL para criação do banco de dados.
+*   `src/`: Scripts Python para geração de dados e pipeline ETL.
+*   `docker-compose.yml`: Definição do serviço de banco de dados.
 
-### Out of Scope
-- Real-time data streaming.
-- Machine Learning for price prediction (focus is on descriptive analytics).
-- Web interface for data entry.
+## KPIs Principais
+*   **Custo Médio de Frete por Tonelada:** Análise temporal e por rota.
+*   **Custo por Quilômetro:** Métrica de eficiência logística.
+*   **Taxa de Rejeição:** Percentual de registros reprovados pelas regras de validação (Sanity Check).
 
-## Key Performance Indicators (KPIs)
-| KPI | Description |
-|-----|-------------|
-| **Average Freight Cost per Ton** | Evaluated by route and month |
-| **Cost per Kilometer** | To compare efficiency across different routes |
-| **Rejection Rate** | Percentage of records rejected by the Sanity Check |
+## Roadmap e Status
+O projeto está estruturado em Sprints para simular um ambiente ágil.
 
-## Critical Business Rules (Logistics Sanity Check)
-To ensure data quality, the ETL process applies the following validation logic. Records failing these checks are rejected and logged separately:
+### Sprint 1: Infraestrutura e Modelagem (Concluído)
+- [x] Configuração de ambiente containerizado (Docker).
+- [x] Modelagem Dimensional (Star Schema).
+- [x] Implementação do Banco de Dados (DDL).
 
-1. **Maximum Speed Feasibility:**
-   - Calculate average speed: `Distance (KM) / (Arrival Time - Departure Time)`
-   - Rule: If average speed > 90 KM/h, mark as invalid (heavy trucks cannot sustain this average safely on local roads)
-   - Rule: If `Arrival Time` <= `Departure Time`, mark as invalid
+### Sprint 2: Engenharia de Dados (Em Andamento)
+- [x] Configuração do ambiente Python e dependências.
+- [x] Geração de massa de dados sintética.
+- [ ] Implementação de lógica de transformação e validação ("Logistics Sanity Check").
+- [ ] Carga de dados no ambiente containerizado.
 
-2. **Cost Consistency:**
-   - Rule: Freight Value cannot be negative or zero
+### Sprint 3: Migração e BI (Planejado)
+- [ ] Migração de dados entre ambientes (Docker → Local).
+- [ ] Conexão e modelagem no Power BI.
+- [ ] Desenvolvimento de medidas DAX e Dashboards.
 
-## Environment Specifications
-| Component | Technology |
-|-----------|------------|
-| **Source Database** | SQL Server 2022 (Docker) |
-| **Visualization Tool** | Power BI Desktop (Windows) |
-| **ETL Language** | Python 3.10+ (Pandas, NumPy, SQLAlchemy, PyODBC) |
-| **Database Management** | SQL Client (e.g., SSMS, Azure Data Studio, DBeaver) |
-| **Version Control** | Git & GitHub |
+### Sprint 4: Documentação e Refinamento (Planejado)
+- [ ] Refatoração de código e modularização.
+- [ ] Testes end-to-end e validação final.
 
-## Repository Structure
-```
-├── docs/                 # Data dictionary, deployment instructions
-│   ├── DATA_DICTIONARY.md    # Schema & ETL rules
-│   └── DEPLOYMENT.md         # Environment setup & migration guide
-├── sql/                  # DDL scripts for database tables and procedures
-├── src/                  # ETL scripts and data validation code (future)
-├── BACKLOG.md            # Sprint planning and task tracking
-└── docker-compose.yml    # SQL Server container configuration
-```
-
-## Project Status
-Currently in development (Sprint 1), with focus on environment configuration and data modeling in SQL Server.
+---
+*Para detalhes sobre regras de negócio e esquema de dados, consulte [DATA_DICTIONARY.md](docs/DATA_DICTIONARY.md).*
+*Para instruções de configuração e execução, consulte [DEPLOYMENT.md](docs/DEPLOYMENT.md).*
