@@ -53,6 +53,7 @@ for i in range(max_records):
         "origin_city": route[0],
         "destination_city": route[1],
         "distance_km": route[2],
+        "vehicle_plate": f"{''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZ', k=3))}{random.randint(0, 9)}{random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ')}{random.randint(0, 9)}{random.randint(0, 9)}",
         "vehicle_type": vehicle_type,
         "vehicle_capacity": vehicles[vehicle_type]["capacity"],
         "departure_date": departure_date,
@@ -65,7 +66,9 @@ for i in range(max_records):
     if random.random() < 0.05:
         event = random.randrange(0, 3)
         if event == 0:
-            record["arrival_date"] = record["departure_date"] - datetime.timedelta(
+            record["arrival_date"] = record[
+                "departure_date"
+            ] - datetime.timedelta(
                 hours=(record["distance_km"] / random.uniform(60, 80))
             )
             negative_arrival = 1
@@ -73,16 +76,20 @@ for i in range(max_records):
             record["freight_value"] *= -1
             negative_freight = 1
         else:
-            record["arrival_date"] = record["departure_date"] + datetime.timedelta(
-                hours=1
-            )
+            record["arrival_date"] = record[
+                "departure_date"
+            ] + datetime.timedelta(hours=1)
             impossible_speed = 1
 
     records.append(record)
 
-records[0]["arrival_date"] = records[0]["departure_date"] - datetime.timedelta(hours=5)
+records[0]["arrival_date"] = records[0]["departure_date"] - datetime.timedelta(
+    hours=5
+)
 records[1]["freight_value"] *= -1
-records[2]["arrival_date"] = records[2]["departure_date"] + datetime.timedelta(hours=1)
+records[2]["arrival_date"] = records[2]["departure_date"] + datetime.timedelta(
+    hours=1
+)
 
 df = pd.DataFrame(records)
 df.to_csv("data/raw/freight_data.csv", index=False)
