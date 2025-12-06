@@ -61,3 +61,6 @@ data/processed/*
 # --- OS Generated ---
 .DS_Store
 Thumbs.db
+
+# --- UV ---
+.uv_cache

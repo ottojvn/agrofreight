@@ -17,7 +17,8 @@ O modelo segue a arquitetura **Star Schema** para otimização de consultas em f
 | Coluna | Tipo | Descrição |
 |--------|------|-----------|
 | FreightID | PK, INT | Identificador único do frete. |
-| DateID | FK, INT | Chave para dimensão de tempo. |
+| DepartureDateID | FK, INT | Chave para data de saída (inicio). |
+| ArrivalDateID | FK, INT | Chave para data de chegada (fim). |
 | RouteID | FK, INT | Chave para dimensão de rota. |
 | VehicleID | FK, INT | Chave para dimensão de veículo. |
 | FreightValue | DECIMAL(10,2) | Valor total do frete (R$). |
@@ -40,8 +41,19 @@ O modelo segue a arquitetura **Star Schema** para otimização de consultas em f
 | Coluna | Tipo | Descrição |
 |--------|------|-----------|
 | VehicleID | PK, INT | Identificador único. |
-| PlateNumber | VARCHAR(20) | Placa anonimizada ou hash. |
+| PlateNumber | VARCHAR(64) | Placa anonimizada ou hash. |
+| VehicleType | VARCHAR(50) | Tipo do Veículo |
 | Capacity | INT | Capacidade máxima (kg). |
+
+**Dim_Date**: Datas registradas
+
+| Coluna | Tipo | Descrição |
+|--------|------|-----------|
+| DateID | PK, INT | Identificador único. |
+| RecordDate | DATE | Data registrada |
+| Month | INT | Mês registrado |
+| Year | INT | Ano registrado |
+| IsHarvestSeason | BIT | Se o mês é temporada de colheita. |
 
 ---
 

@@ -39,9 +39,6 @@ vehicles = {
 price_per_km = 5.00
 safra_begin = datetime.datetime(2025, 3, 1)
 safra_end = datetime.datetime(2025, 5, 31)
-negative_arrival = 0
-negative_freight = 0
-impossible_speed = 0
 max_records = 5000
 
 records = []
@@ -61,35 +58,27 @@ for i in range(max_records):
         + datetime.timedelta(hours=(route[2] / random.uniform(60, 80))),
         "freight_value": route[2] * price_per_km,
         "diesel_price": random.uniform(5.50, 6.90),
+        "weight_ton": random.uniform(0.8, 1.1),
     }
 
     if random.random() < 0.05:
         event = random.randrange(0, 3)
         if event == 0:
-            record["arrival_date"] = record[
-                "departure_date"
-            ] - datetime.timedelta(
+            record["arrival_date"] = record["departure_date"] - datetime.timedelta(
                 hours=(record["distance_km"] / random.uniform(60, 80))
             )
-            negative_arrival = 1
         elif event == 1:
             record["freight_value"] *= -1
-            negative_freight = 1
         else:
-            record["arrival_date"] = record[
-                "departure_date"
-            ] + datetime.timedelta(hours=1)
-            impossible_speed = 1
+            record["arrival_date"] = record["departure_date"] + datetime.timedelta(
+                hours=1
+            )
 
     records.append(record)
 
-records[0]["arrival_date"] = records[0]["departure_date"] - datetime.timedelta(
-    hours=5
-)
+records[0]["arrival_date"] = records[0]["departure_date"] - datetime.timedelta(hours=5)
 records[1]["freight_value"] *= -1
-records[2]["arrival_date"] = records[2]["departure_date"] + datetime.timedelta(
-    hours=1
-)
+records[2]["arrival_date"] = records[2]["departure_date"] + datetime.timedelta(hours=1)
 
 df = pd.DataFrame(records)
 df.to_csv("data/raw/freight_data.csv", index=False)

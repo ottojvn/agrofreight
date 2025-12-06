@@ -23,7 +23,7 @@ CREATE TABLE Dim_Route
 CREATE TABLE Dim_Vehicle
 (
     VehicleID INTEGER IDENTITY(1,1) PRIMARY KEY,
-    PlateNumber VARCHAR(20) NOT NULL,
+    PlateNumber VARCHAR(64) NOT NULL,
     VehicleType VARCHAR(50) NOT NULL,
     Capacity INTEGER NOT NULL
 );
@@ -39,13 +39,15 @@ CREATE TABLE Log_Errors
 CREATE TABLE Fact_Freight
 (
     FreightID INTEGER IDENTITY(1,1) PRIMARY KEY,
-    DateID INTEGER NOT NULL,
+    DepartureDateID INTEGER NOT NULL,
+    ArrivalDateID INTEGER NOT NULL,
     RouteID INTEGER NOT NULL,
     VehicleID INTEGER NOT NULL,
     FreightValue DECIMAL(10, 2) NOT NULL,
     DieselPrice DECIMAL(10, 2) NOT NULL,
     WeightTon DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (DateID) REFERENCES Dim_Date(DateID),
+    FOREIGN KEY (DepartureDateID) REFERENCES Dim_Date(DateID),
+    FOREIGN KEY (ArrivalDateID) REFERENCES Dim_Date(DateID),
     FOREIGN KEY (RouteID) REFERENCES Dim_Route(RouteID),
     FOREIGN KEY (VehicleID) REFERENCES Dim_Vehicle(VehicleID)
 );
